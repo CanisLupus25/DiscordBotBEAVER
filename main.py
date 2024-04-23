@@ -29,7 +29,7 @@ class BEAVER(commands.Bot):
                                        f"Создать ещё сапёр: {self.user.mention}\n"
                                        f"{generated}")
             except Exception:
-                await ctx.send('Неверно введена команда. Команда: !mine')
+                await ctx.send('Неверно введена команда. Команда: !minesweeper <число мин от 5 до 50>')
 
     async def on_message(self, message: discord.Message):
         if self.user != message.author:
@@ -37,6 +37,7 @@ class BEAVER(commands.Bot):
                 await message.delete()
                 await message.channel.send(f'{message.author.mention}, здесь не принято ругаться!')
             else:
+
                 await self.process_commands(message)
 
 

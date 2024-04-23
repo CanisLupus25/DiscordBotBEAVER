@@ -1,4 +1,5 @@
-import numpy as np
+import sqlite3
 
-arr = np.arange(16).reshape((4, 4))
-print(np.roll(arr, (1, 0), axis=(1, 0)))
+file = open('statistic.db', mode='w')
+dbase = sqlite3.connect(file.name)
+dbase.execute()
