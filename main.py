@@ -2,16 +2,34 @@ import discord
 import discord.ext.commands as commands
 from better_profanity import profanity
 
-from badwords18plus import badwords
-from bot_token import TOKEN
+from keys import BOT_KEY
+from minesweeper_generator import generate_field
 
-profanity.load_censor_words(badwords)
+profanity.load_censor_words()
+profanity.add_censor_words(open('swear_words18+.txt', encoding='UTF-8').read().split())
 
 
 class BEAVER(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.add_command(mute)
+
+        @self.command('mute')
+        async def mute(ctx: commands.Context):
+            await ctx.channel.send('OK!')
+
+        @self.command('minesweeper')
+        async def minesweeper(ctx: commands.Context, mines='12'):
+            try:
+                mines = int(mines)
+                if not 5 <= mines <= 50:
+                    raise Exception
+                generated = generate_field(9, mines)
+                await ctx.channel.send(f"Сапёр создан!\n"
+                                       f"Количество мин: {mines}\n"
+                                       f"Создать ещё сапёр: {self.user.mention}\n"
+                                       f"{generated}")
+            except Exception:
+                await ctx.send('Неверно введена команда. Команда: !mine')
 
     async def on_message(self, message: discord.Message):
         if self.user != message.author:
@@ -22,11 +40,6 @@ class BEAVER(commands.Bot):
                 await self.process_commands(message)
 
 
-@commands.command('mute')
-async def mute(ctx: commands.Context):
-    await ctx.channel.send('OK!')
-
-
 def main():
     intents = discord.Intents.default()
     intents.members = True
@@ -34,7 +47,7 @@ def main():
     intents.message_content = True
 
     bot = BEAVER(command_prefix='!', intents=intents)
-    bot.run(token=TOKEN)
+    bot.run(token=BOT_KEY)
 
 
 if __name__ == '__main__':
