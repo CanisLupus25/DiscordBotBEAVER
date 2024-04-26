@@ -1,5 +1,3 @@
-import sqlite3
+import datetime
 
-file = open('statistic.db', mode='w')
-dbase = sqlite3.connect(file.name)
-dbase.execute()
+print(datetime.datetime(2000, 12, 1, 0, 0, 0) - datetime.datetime(2000, 11, 1, 2, 3, 2) < datetime.timedelta(days=10))
